@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RK Quiz Website</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🔥 RK Quiz Website</h1>
+
+    <form action="/submit" method="POST">
+
+        {% for q in quiz %}
+
+        <div class="question-box">
+
+            <h3>
+                Q{{ loop.index }}.
+                {{ q.question }}
+            </h3>
+
+            {% set question_index = loop.index0 %}
+
+            {% for option in q.options %}
+
+            <label>
+
+                <input type="radio"
+                       name="{{ question_index }}"
+                       value="{{ option }}"
+                       required>
+
+                {{ option }}
+
+            </label>
+
+            <br>
+
+            {% endfor %}
+
+        </div>
+
+        {% endfor %}
+
+        <button type="submit">
+            Submit Quiz
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
