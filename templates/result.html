@@ -2,53 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RK Quiz Website</title>
+    <title>Mission Report | RK Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* POLL OPTION STYLING */
+        .poll-option {
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+        /* CELEBRATION GLOW FOR CORRECT ANSWERS */
+        .success-trigger-burst {
+            border: 2px solid #00ffd5 !important;
+            background: rgba(0, 255, 213, 0.15) !important;
+            animation: glow-pulse 1.5s infinite;
+        }
+
+        /* FLOATING SPARKLE EMOJIS */
+        .success-trigger-burst::after {
+            content: '✨';
+            position: absolute;
+            right: 15px;
+            top: -15px;
+            font-size: 24px;
+            animation: float-up 2s infinite ease-in-out;
+        }
+
+        .wrong-glow {
+            border: 2px solid #ff4d4d !important;
+            background: rgba(255, 77, 77, 0.1) !important;
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 5px #00ffd5; }
+            50% { box-shadow: 0 0 20px #00ffd5; }
+            100% { box-shadow: 0 0 5px #00ffd5; }
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="container">
-
-    <h1>🔥 RK Quiz Website</h1>
-
-    <form action="/submit" method="POST">
-
-        {% for q in quiz %}
-
-        <div class="question-box">
-
-            <h3>{{ loop.index }}. {{ q.question }}</h3>
-
-            {% for option in q.options %}
-
-            <label>
-                <input type="radio"
-                       name="{{ loop.parent.index0 }}"
-                       value="{{ option }}"
-                       required>
-
-                {{ option }}
-            </label>
-
+    <div class="container">
+        <div class="result-box" style="text-align: center; margin-bottom: 50px;">
+            <h1 class="title">MISSION REPORT</h1>
+            <h2 style="color: #00ffd5; font-size: 28px;">{{ comment }}</h2>
+            <p style="font-size: 18px;">
+                Score: <strong>{{ score }}/{{ total }}</strong> | 
+                Time Remaining: <strong>{{ time_left }}s</strong>
+            </p>
             <br>
-
-            {% endfor %}
-
+            <a href="/quiz"><button class="main-btn">RETRY MISSION</button></a>
         </div>
 
+        {% for item in results %}
+        <div class="question-box">
+            <h3 style="margin-bottom: 20px;">{{ loop.index }}. {{ item.question }}</h3>
+            
+            <div class="poll-container">
+                {% for opt in item.all_options %}
+                    {% set is_correct = (opt == item.correct_answer) %}
+                    {% set is_user = (opt == item.user_answer) %}
+                    
+                    <div class="poll-option 
+                        {{ 'success-trigger-burst' if is_user and is_correct }} 
+                        {{ 'wrong-glow' if is_user and not is_correct }}
+                        {{ 'correct-glow' if is_correct and not is_user }}">
+                        
+                        <span>{{ opt }}</span>
+                        
+                        <span style="font-weight: bold; font-size: 11px; letter-spacing: 1px;">
+                            {% if is_user and is_correct %}
+                                YOUR CHOICE ✅
+                            {% elif is_user %}
+                                YOUR CHOICE ❌
+                            {% elif is_correct %}
+                                CORRECT ANSWER
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         {% endfor %}
-
-        <button type="submit">
-            Submit Quiz
-        </button>
-
-    </form>
-
-</div>
-
+    </div>
 </body>
 </html>

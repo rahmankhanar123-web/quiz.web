@@ -1,65 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>RK Quiz | Knowledge Galaxy Challenge</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>RK Quiz Website</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-<div class="container">
+    <div class="timer-wrapper">
+        <div id="timer-text-label" class="timer-label">
+            Mission Time Remaining
+        </div>
+        
+        <div id="timer-circle" class="timer-circle">
+            <span id="time-left">30</span>
+        </div>
+    </div>
 
-    <h1>🔥 RK Quiz Website</h1>
 
-    <form action="/submit" method="POST">
+    <div class="container">
+        
+        <header style="margin-bottom: 60px; text-align: center;">
+            <h1 class="title">🌌 KNOWLEDGE GALAXY</h1>
+            <p style="color: rgba(255,255,255,0.6); letter-spacing: 1px;">
+                Prove your intellect among the stars.
+            </p>
+        </header>
 
-        {% for q in quiz %}
+        <form id="quiz-form" action="/submit" method="POST">
+            
+            {% for q in quiz %}
+            <div class="question-box">
+                
+                <div class="question-header">
+                    <span style="color: #00ffd5; font-weight: bold; margin-right: 10px;">
+                        #{{ loop.index }}
+                    </span>
+                    <h3 style="display: inline; color: #fff;">{{ q.question }}</h3>
+                </div>
 
-        <div class="question-box">
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
 
-            <h3>
-                Q{{ loop.index }}.
-                {{ q.question }}
-            </h3>
+                <div class="option-container">
+                    
+                    {% set q_idx = loop.index0 %}
 
-            {% set question_index = loop.index0 %}
-
-            {% for option in q.options %}
-
-            <label>
-
-                <input type="radio"
-                       name="{{ question_index }}"
-                       value="{{ option }}"
-                       required>
-
-                {{ option }}
-
-            </label>
-
-            <br>
-
+                    {% for option in q.options %}
+                    <label class="option-row">
+                        <input type="radio" 
+                               name="{{ q_idx }}" 
+                               value="{{ option }}" 
+                               class="galaxy-radio"
+                               required>
+                        
+                        <span class="option-text">{{ option }}</span>
+                    </label>
+                    {% endfor %}
+                    
+                </div>
+            </div>
             {% endfor %}
 
-        </div>
+            <footer style="margin-top: 50px; text-align: center; padding-bottom: 100px;">
+                <button type="submit" class="main-btn">
+                    COMPLETE MISSION & SUBMIT
+                </button>
+                <p style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.4);">
+                    * Ensure all questions are answered before the timer hits zero.
+                </p>
+            </footer>
 
-        {% endfor %}
+        </form>
+        <input type="hidden" name="time_remaining" id="time_remaining_input" value="30">
 
-        <button type="submit">
-            Submit Quiz
-        </button>
+<script>
+    // 1. COMPLETELY WIPE ALL TIMERS ON THE ENTIRE WINDOW
+    var highestTimeoutId = setTimeout(";");
+    for (var i = 0 ; i < highestTimeoutId ; i++) {
+        clearTimeout(i); 
+        clearInterval(i);
+    }
 
-    </form>
+    // 2. NEW LOGIC
+    let galaxyTime = 30;
+    const timeBox = document.getElementById('time-left');
+    const inputHidden = document.getElementById('time_remaining_input');
 
-</div>
+    const galaxyInterval = setInterval(() => {
+        galaxyTime--;
+        
+        if (timeBox) timeBox.innerText = galaxyTime;
+        if (inputHidden) inputHidden.value = galaxyTime;
+
+        if (galaxyTime <= 0) {
+            clearInterval(galaxyInterval);
+            document.getElementById('quiz-form').submit();
+        }
+    }, 1000); // 1000ms is exactly 1 second
+</script>
 
 </body>
 </html>
