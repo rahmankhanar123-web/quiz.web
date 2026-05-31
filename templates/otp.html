@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Identity | RK Galaxy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">📡 OTP VERIFICATION</h1>
+        <div class="question-box">
+            <p style="color: #888; margin-bottom: 20px;">Enter the 4-digit code sent to your terminal.</p>
+            <form action="/verify-otp" method="POST">
+                <input type="text" name="otp_code" maxlength="4" placeholder="0 0 0 0" required 
+                       style="width: 60%; padding: 15px; font-size: 2em; letter-spacing: 10px; text-align: center; border-radius: 8px; border: 1px solid #00ffd5; background: #111; color: #00ffd5;">
+                
+                <button type="submit" class="main-btn" style="width: 100%; margin-top: 25px;">VERIFY & ENTER</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

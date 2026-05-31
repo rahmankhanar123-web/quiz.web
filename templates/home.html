@@ -2,23 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RK Quiz | Home</title>
+    <title>Dashboard | RK Galaxy</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Profile Dropdown Styles */
+        .profile-container { position: relative; }
+        .profile-icon {
+            width: 45px; height: 45px; background: #00ffd5; 
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; cursor: pointer; color: #000; font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 213, 0.4);
+        }
+        .account-details {
+            display: none; position: absolute; right: 0; top: 60px;
+            background: #1a1a1a; border: 1px solid #333; padding: 20px;
+            width: 220px; border-radius: 12px; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .account-details.show { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity:0; transform: translateY(-10px); } to { opacity:1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<div class="hero">
-    <h1 class="title">🌌 RK QUIZ</h1>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(0,0,0,0.3); border-bottom: 1px solid #222;">
+        <div class="logo" style="font-size: 1.8rem; font-weight: bold; color: #00ffd5; letter-spacing: 2px;">RK GALAXY</div>
+        
+        <div class="profile-container">
+            <div class="profile-icon" onclick="toggleProfile()">
+                {{ user[0] | upper }}
+            </div>
+            <div id="accMenu" class="account-details">
+                <h3 style="margin: 0; color: #fff;">{{ user }}</h3>
+                <p style="color: #00ffd5; font-size: 0.8rem; margin-bottom: 15px;">
+                    Rank: {% if session.get('is_guest') %}Guest Pilot{% else %}Elite Pilot{% endif %}
+                </p>
+                <hr style="border: 0.1px solid #333;">
+                <a href="/logout" style="color: #ff4b4b; text-decoration: none; display: block; margin-top: 10px;">Log Out</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="middle-text">
-        <h2>Enter The Knowledge Galaxy.</h2>
+    <div class="container" style="text-align: center; margin-top: 50px;">
+        <h1 class="title">MISSION CONTROL</h1>
+        <p>Welcome back, Commander. Choose your next move.</p>
+        
+        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px;">
+            <a href="/quiz"><button class="main-btn">START QUIZ</button></a>
+            <a href="/create"><button class="main-btn" style="background: transparent; border: 2px solid #00ffd5; color: #00ffd5;">CREATE QUIZ</button></a>
+        </div>
     </div>
 
-    <div class="bottom-buttons">
-        <a href="/quiz"><button class="main-btn">Attend Quiz</button></a>
-        <a href="/create"><button class="main-btn">Create Quiz</button></a>
-    </div>
-</div>
-
+    <script>
+        function toggleProfile() {
+            document.getElementById("accMenu").classList.toggle("show");
+        }
+        // Close if clicked outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-icon')) {
+                var dropdowns = document.getElementsByClassName("account-details");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].classList.contains('show')) {
+                        dropdowns[i].classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>

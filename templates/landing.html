@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RK Galaxy | Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .splash-container {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .login-options { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; width: 300px; }
+        .btn-social { 
+            padding: 12px; border-radius: 25px; border: none; cursor: pointer;
+            font-weight: bold; transition: 0.3s;
+        }
+        .google { background: #db4437; color: white; }
+        .guest { background: transparent; border: 2px solid #00ffd5; color: #00ffd5; }
+    </style>
+</head>
+<body>
+    <div class="splash-container">
+        <h1 class="title" style="font-size: 4em; letter-spacing: 10px;">RK GALAXY</h1>
+        <p style="color: #888;">Select your entry portal</p>
+
+        <div class="login-options">
+            <button class="btn-social google">Sign in with Google</button>
+            <button class="btn-social" style="background: #4267B2; color: white;">Sign in with Facebook</button>
+            <a href="/guest-login"><button class="btn-social guest">Continue as Guest</button></a>
+        </div>
+    </div>
+</body>
+</html>

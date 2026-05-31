@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | RK Galaxy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🚀 NEW PILOT REGISTRATION</h1>
+        <div class="question-box">
+            <form action="/signup" method="POST">
+                <input type="text" name="username" placeholder="Choose Username" required 
+                       style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: white;">
+                
+                <input type="email" name="email" placeholder="Enter Email ID" required 
+                       style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: white;">
+
+                <input type="password" name="password" placeholder="Create Password" required 
+                       style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #444; background: #222; color: white;">
+                
+                <button type="submit" class="main-btn" style="width: 100%;">REGISTER TO GALAXY</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.9em;">Already a pilot? <a href="/login" style="color: #00ffd5;">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>
